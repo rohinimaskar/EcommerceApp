@@ -15,6 +15,7 @@ export class ProductService  {
     private http: HttpClient
   ) { }
 
+  // Http get request to fetch data from assets folder
   getAllProducts(): Observable<string> {
     return this.http.get('/assets/test.txt', { responseType: 'text'});
   }
