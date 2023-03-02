@@ -1,0 +1,39 @@
+<div class="container my-3">
+    <h3 class="mb-3 mt-0">Products</h3>
+    <div class="pb-3">
+        <div class="form-group">
+            <label class="pb-2">Color: </label>
+            <input type="text" class="form-control" [(ngModel)]="searchKey" (keyup)="filter()" placeholder="Search">
+        </div>
+    </div>
+    <table class="table" *ngIf="productService.displayProductsList">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Color</th>
+                <th>Type</th>
+                <th>Price</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr
+                *ngFor="let product of productService.displayProductsList | paginate: { itemsPerPage: count, currentPage: pages }">
+                <td>{{product.name}}</td>
+                <td>{{product.color}}</td>
+                <td>{{product.type}}</td>
+                <td>{{product.price}}</td>
+                <td>
+                    <button type="button" class="btn btn-light btn-sm" (click)="editProduct(product.id)">Edit</button>
+                    <button type="button" class="btn btn-light btn-sm"
+                        (click)="deleteProduct(product.id)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p *ngIf="!productService.displayProductsList || productService.displayProductsList.length <=0">No products to
+        display</p>
+    <div class="text-center">
+        <pagination-controls (pageChange)="pages = $event"></pagination-controls>
+    </div>
+    <div>

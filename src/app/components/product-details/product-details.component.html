@@ -1,0 +1,60 @@
+<div class="container my-5">
+  <div class="row">
+    <div class="col-6">
+      <form #productDataForm="ngForm" *ngIf="productDetails" (ngSubmit)="updateProduct()">
+        <div class="mb-3">
+          <label for="name" class="form-label required">Name</label>
+          <input type="text" class="form-control" id="exampleInputEmail1" [(ngModel)]="productDetails.name"
+            [ngModelOptions]="{standalone: true}" name="name" required #name="ngModel">
+          <div [hidden]="name.valid || name.pristine" class="text-danger">
+            Name is required
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="color" class="form-label">Color</label>
+          <input type="text" class="form-control" id="colorInput" [(ngModel)]="productDetails.color"
+            [ngModelOptions]="{standalone: true}" name="color" required #color="ngModel" maxlength="56">
+          <div [hidden]="color.valid || color.pristine" class="text-danger">
+            Color is required
+          </div>
+          <div *ngIf="color.errors?.['maxlength']" class="text-danger">
+            Color must be less than 56 characters.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="color" class="form-label">Description</label>
+          <input type="text" class="form-control" id="colorInput" [(ngModel)]="productDetails.description"
+            [ngModelOptions]="{standalone: true}" name="description" required #description="ngModel">
+          <div [hidden]="description.valid || description.pristine" class="text-danger">
+            Description is required
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="type" class="form-label">Type</label>
+          <input type="text" class="form-control" id="typeInput" [(ngModel)]="productDetails.type"
+            [ngModelOptions]="{standalone: true}" name="type" required #type="ngModel" maxlength="56">
+          <div [hidden]="type.valid || type.pristine" class="text-danger">
+            Type is required
+          </div>
+          <div *ngIf="type.errors?.['maxlength']" class="text-danger">
+            Type must be less than 56 characters.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="price" class="form-label">Price</label>
+          <input type="number" class="form-control" id="priceInput" [(ngModel)]="productDetails.price"
+            [ngModelOptions]="{standalone: true}" name="price" required #price="ngModel" min="0">
+          <div *ngIf="price.errors?.['min']" class="text-danger">
+            Price can not be less than 0.
+          </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" [disabled]="!productDataForm.form.valid">Update</button>
+      </form>
+    </div>
+  </div>
+</div>
