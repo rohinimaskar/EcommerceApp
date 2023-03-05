@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 import * as _ from 'lodash';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+
 
 @Component({
   selector: 'app-products-list',
@@ -13,6 +15,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   searchKey: string = '';
   pages: number = 1;
   count: number = 10;
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     protected productService: ProductService,
@@ -22,7 +25,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.productService.productsList?.length <= 0) {
-      this.productService.getAllProducts().subscribe({
+      this.productService.getAllProducts().pipe(takeUntil(this.destroy$)).subscribe({
         next: (res) => {
           this.productService.productsList = JSON.parse(res);
           this.productService.displayProductsList = JSON.parse(res);
@@ -61,7 +64,12 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   }
 
 
+  // Unsubscribe the observable to avoid any memory leaks
   ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+
   }
 
 }
+
