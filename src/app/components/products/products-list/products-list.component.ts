@@ -63,12 +63,10 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     this.pages = 1;
   }
 
-
   // Unsubscribe the observable to avoid any memory leaks
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
-
   }
 
 }
